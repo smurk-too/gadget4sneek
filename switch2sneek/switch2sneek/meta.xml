@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+	<name>switch2sneek</name>
+	<version>0.2 Beta</version>
+        <coder>Conanac</coder>
+	<release_date>201003060000</release_date>
+	<short_description>switch2sneek</short_description>
+	<long_description>This is a simple application for Wii user to switch to SNEEK (emulated NAND on SD card).
+
+Usage: To initialize (while not running SNEEK), rename armboot.bin from SNEEK v2 to be armbootsneek.bin, and put it in the directory bootmii along with armboot.bin from BootMii. And make an empty file called switchtosneek in the directory bootmii as well.
+
+Controls: 
+Push button [A] to prepare for running SNEEK (Wii will reboot after this); Push button [B] to return to real NAND (use this when running with SNEEK); Push button [Home] to exit without switching.
+
+Credits:
+crediar for developing emulated wiibrew application SNEEK, cwstjdenobs for BootMii Switch application, tona for AnyRegion and AnyTitle (used as template for this simple application).
+</long_description>
+</app>
