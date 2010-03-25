@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+	<name>sneek2sneekplus</name>
+	<version>0.1 Beta</version>
+        <coder>Conanac</coder>
+	<release_date>201003210000</release_date>
+	<short_description>sneek2sneekplus</short_description>
+	<long_description>This is a simple application for Wii user to switch between SNEEK +/- DI.
+
+Usage: To initialize prepare all required files in the appropriate folder of SD card. And use this application when running SNEEK (SD NAND).
+
+Controls: 
+Push button [A] to prepare for running SNEEK+DI and then to choose games use buttons [+],[-], and [A] for confirming the selection (Wii will reboot after this); Push button [B] to return to SNEEK (without DI); Push button [Home] to exit without switching.
+
+Credits:
+crediar for developing emulated wiibrew application SNEEK, cwstjdenobs for BootMii Switch application, tona for AnyRegion and AnyTitle (used as template for this simple application).
+</long_description>
+</app>
