@@ -4,6 +4,8 @@ switch2sneek application
 
 Author: conanac
 Created: 02/27/2010
+version 0.3beta (04/04/2010) -- adding exitme and checkhbc to avoid core dump at exit 
+	when run as a channel
 
 */
 
@@ -22,14 +24,42 @@ Created: 02/27/2010
 #include "../build/fake_su_tmd_dat.h"
 #include "../build/fake_su_ticket_dat.h"
 
+u8 loaderhbc = 0;
 static u32 *xfb[2] = { NULL, NULL };
 static GXRModeObj *vmode;
+
+void checkhbc(void)
+{
+	if (*((u32 *) 0x80001804) == 0x53545542 && *((u32 *) 0x80001808) == 0x48415858)
+		loaderhbc = 1;
+
+	if (*((u32 *) 0x80001804) == 0x53545542 && *((u32 *) 0x80001808) == 0x4A4F4449)
+		loaderhbc = 1;
+
+}
+
+void exitme(void)
+{
+	if (loaderhbc)
+	{
+		WII_Initialize();
+		if (WII_LaunchTitle(0x0001000148415858ULL) < 0) 
+		{ 
+		    if (WII_LaunchTitle(0x000100014A4F4449ULL) < 0)
+			    WII_ReturnToMenu();
+		}
+	}
+	else
+	{
+		WII_ReturnToMenu();
+	}
+}
 
 void die(char *msg) {
 	printf(msg);
 	sleep(5);
 	fatUnmount("sd:");
-	exit(1);
+	exitme();
 }
 
 void initialise(void) 
@@ -284,6 +314,7 @@ void miscdeinit(void)
 int main(void) 
 {
 	initialise();
+	checkhbc();
 	
 	printf("Push button [A] to start switching to SD NAND\n");
 	printf("Push button [B] to start switching back to real NAND\n");
@@ -298,7 +329,7 @@ int main(void)
 		if (wpaddown & WPAD_BUTTON_HOME){
 			printf("exiting now...OK\n");
 			sleep(5);
-			exit(0);
+			exitme();
 		}
 		if (wpaddown & WPAD_BUTTON_B){
 			switchback = true;
@@ -317,14 +348,14 @@ int main(void)
        {
 		  printf("It seems sneek is not running, check switchtosneek and switchtomii files\n\n");
 	      sleep(5);
-          exit(0);
+          exitme();
 	   }
 
 	   if(armbootmii == false)
        {
           printf("No sneek v2 file in bootmii directory: armbootmii.bin\n\n");
 	      sleep(5);
-          exit(0);
+          exitme();
        }
 
        printf("You have ");
@@ -357,14 +388,14 @@ int main(void)
         {
 		   printf("It seems bootmii is not running, check switchtosneek and switchtomii files\n\n");
 	       sleep(5);
-           exit(0);
+           exitme();
 	    }
 	   
 	    if(armbootsneek == false)
         {
            printf("No sneek v2 file in bootmii directory: armbootsneek.bin\n\n");
 	       sleep(5);
-           exit(0);
+           exitme();
         }
 
         printf("You have ");

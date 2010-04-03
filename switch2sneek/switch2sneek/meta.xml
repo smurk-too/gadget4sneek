@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <app version="1">
 	<name>switch2sneek</name>
-	<version>0.2 Beta</version>
+	<version>0.3 Beta</version>
         <coder>Conanac</coder>
-	<release_date>201003060000</release_date>
+	<release_date>201004030000</release_date>
 	<short_description>switch2sneek</short_description>
 	<long_description>This is a simple application for Wii user to switch to SNEEK (emulated NAND on SD card).
 
