@@ -4,6 +4,8 @@ sneek2sneekplus application
 
 Author: conanac
 Created: 03/21/2010
+version 0.2beta (04/04/2010) -- adding exitme and checkhbc to avoid core dump at exit 
+	when run as a channel, and fix bugs
 
 */
 
@@ -23,15 +25,43 @@ Created: 03/21/2010
 #include "../build/fake_su_tmd_dat.h"
 #include "../build/fake_su_ticket_dat.h"
 
+u8 loaderhbc = 0;
 static void *xfb = NULL;
 static GXRModeObj *rmode = NULL;
+
+void checkhbc(void)
+{
+	if (*((u32 *) 0x80001804) == 0x53545542 && *((u32 *) 0x80001808) == 0x48415858)
+		loaderhbc = 1;
+
+	if (*((u32 *) 0x80001804) == 0x53545542 && *((u32 *) 0x80001808) == 0x4A4F4449)
+		loaderhbc = 1;
+
+}
+
+void exitme(void)
+{
+	if (loaderhbc)
+	{
+		WII_Initialize();
+		if (WII_LaunchTitle(0x0001000148415858ULL) < 0) 
+		{ 
+		    if (WII_LaunchTitle(0x000100014A4F4449ULL) < 0)
+			    WII_ReturnToMenu();
+		}
+	}
+	else
+	{
+		WII_ReturnToMenu();
+	}
+}
 
 void die(char *msg) {
 	printf(msg);
 	sleep(5);
 	fatUnmount("sd:");
 	fatUnmount("usb:");
-	exit(1);
+	exitme();
 }
 
 void basicinit(void) 
@@ -205,8 +235,8 @@ void renamefiles(void)
 		printf("\nError! ISFS_Rename(%s, %s) returned %d)\n", filepathold, 
 			filepath, ret);
 	
-	sprintf(filepathold, "/bootmii/armbootmii.bin");
-	sprintf(filepath, "/bootmii/armboot.bin");
+	sprintf(filepathold, "/boot2sneekplus.bin");
+	sprintf(filepath, "/boot2.bin");
 	ret = ISFS_Rename(filepathold, filepath);
 	if (ret < 0)
 		printf("\nError! ISFS_Rename(%s, %s) returned %d)\n", filepathold, 
@@ -516,7 +546,7 @@ int main(void)
 		if (wpaddown & WPAD_BUTTON_HOME){
 			printf("exiting now...OK\n");
 			sleep(5);
-			exit(0);
+			exitme();
 		}
 		if (wpaddown & WPAD_BUTTON_B){
 			switchback = true;
@@ -533,14 +563,14 @@ int main(void)
         	{
 			printf("It seems sneek v2 SD NAND is not running, check switchtosneek and switchtosneekplus files\n\n");
 	     		sleep(5);
-           		exit(0);
+           		exitme();
 	    	}
 	   
 		if(bootsneekplus == false)
         	{
            		printf("No sneek v2 file in SD root directory: boot2sneekplus.bin\n\n");
 	       	sleep(5);
-           		exit(0);
+           		exitme();
         	}
 
 		slotnumber = getslotbin();
@@ -552,7 +582,7 @@ int main(void)
            		printf("slot number = %d in slot.bin file is more than number of games = %d\n\n",
 				slotnumber, maxgames - 1);
 	       	sleep(5);
-           		exit(0);
+           		exitme();
 		}
 
 		do{			
@@ -585,7 +615,7 @@ int main(void)
 			{
 				printf("exiting now...OK\n");
 				sleep(5);
-				exit(0);
+				exitme();
 			}
 		} while (!(wpaddown & WPAD_BUTTON_A));
 
@@ -634,14 +664,14 @@ int main(void)
        	{
 		  	printf("It seems sneek SD NAND + DI is not running, check switchtosneek and switchtosneekplus files\n\n");
 	      	sleep(5);
-          		exit(0);
+          		exitme();
 	   	}
 
 	   	if(bootsneek == false)
        	{
           		printf("No sneek v2 file in SD root directory: boot2sneek.bin\n\n");
 	      	sleep(5);
-          		exit(0);
+          		exitme();
        	}
 
        	printf("You have ");
