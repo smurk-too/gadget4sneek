@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+	<name>switch2uneek</name>
+	<version>0.2 Beta</version>
+        <coder>Conanac</coder>
+	<release_date>201008290000</release_date>
+	<short_description>switch2uneek</short_description>
+	<long_description>This is a simple application for Wii user to switch between real NAND and UNEEK NAND.
+
+Usage: To initialize prepare all required files in the appropriate folder of SD card and USB drive.
+
+Controls: 
+Depending whether bootmii and/or bootmiiuneek folders are available in the SD card, The choice of buttons 
+[A] and [B] will be provided accordingly. Typically with the right set-up of folder, only button [A] needs 
+to be used for switching between real and UNEEK NAND. And to choose from available UNEEK NANDs use buttons 
+[+],[-], and then button [A] for confirming the selection (Wii will reboot after this. Push button [Home] 
+to exit without switching. You cannot switch between available UNEEK NANDs while you are running UNEEK+DI.
+
+Credits:
+crediar for developing this great emulated wiibrew application SNEEK/UNEEK.
+</long_description>
+</app>
