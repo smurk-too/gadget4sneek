@@ -1,5 +1,5 @@
 
-This is a simple application for switching between SNEEK +/- DI.
+This is a simple application for switching between SNEEK with and without DI.
 
 This is a beta release so there are RISKS you could make your Wii
 unoperable (i.e. bricked). Do not use this application if you 
